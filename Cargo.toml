@@ -8,6 +8,10 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.4.2"
+serde = "1.0.101"
+serde_json = "1.0.41"
+serde_derive = "1.0.101"
+harsh = "0.1.6"
 
 [dependencies.rocket_contrib]
 version = "0.4.2"
