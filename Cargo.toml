@@ -16,4 +16,4 @@ harsh = "0.1.6"
 [dependencies.rocket_contrib]
 version = "0.4.2"
 default-features = false
-features = ["redis_pool"]
+features = ["redis_pool", "tera_templates", "serve"]

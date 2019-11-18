@@ -1,0 +1,42 @@
+{% extends "base" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title has-text-centered">Shorten URLs with Rustly!</h1>
+    <div class="columns is-centered">
+        <div class="column is-8">
+            <div class="field">
+                <div class="control">
+                    <input id="urlInput" class="input is-primary" type="text" placeholder="Enter Full URL...">
+                </div>
+            </div>
+        </div>
+        <div class="column is-2">
+            <button id="shortenBtn" class="button is-primary is-fullwidth">Shorten!</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById("shortenBtn").addEventListener('click', shorten);
+
+function shorten() {
+    fetch("http://localhost:8000/api/shortcuts/new", {
+        method: "POST",
+        body: "url=https://google.com",
+        headers: {
+            'Content-Type': 'text/plain'
+        }}).then(function(res) {
+    /*fetch("http://localhost:8000/api/shortcuts/1", {
+        method: "GET",*/
+    //}).then(function(res) {
+        console.log(res);
+        return res.json();
+    }).then(function(data) {
+        var url = document.getElementById("urlInput").value;
+        alert(url);
+    });
+}
+
+</script>
+{% endblock content %}

@@ -1,0 +1,9 @@
+.input {
+    box-shadow: none;
+    border-width: 2px;
+    border-radius: 6px;
+}
+
+.button {
+    border-radius: 6px;
+}
