@@ -1,7 +1,7 @@
 {% extends "base" %}
 
 {% block content %}
-<div class="container">
+<div class="container" id="main">
     <h1 class="title has-text-centered">Shorten URLs with Rustly!</h1>
     <div class="columns is-centered">
         <div class="column is-8">
@@ -19,24 +19,59 @@
 
 <script>
 document.getElementById("shortenBtn").addEventListener('click', shorten);
-
 function shorten() {
-    fetch("http://localhost:8000/api/shortcuts/new", {
+    if (document.getElementById("urlInput").value === "")
+        return;
+    fetch("/api/shortcuts/new", {
         method: "POST",
-        body: "url=https://google.com",
-        headers: {
-            'Content-Type': 'text/plain'
-        }}).then(function(res) {
-    /*fetch("http://localhost:8000/api/shortcuts/1", {
-        method: "GET",*/
-    //}).then(function(res) {
-        console.log(res);
+        body: new URLSearchParams("url="+
+            document.getElementById("urlInput").value)
+        }).then(function(res) {
         return res.json();
     }).then(function(data) {
-        var url = document.getElementById("urlInput").value;
-        alert(url);
+        var shortcutString = `
+<div class="columns is-centered">
+    <div class="column is-10">
+        <div class="notification">
+            <div class="columns is-vcentered">
+                <div class="column">
+                    <a class="subtitle is-size-5" href="{{base}}/${data.id}" target="_blank">
+                    <span class="has-text-weight-bold shortcut">
+                    {{base}}/${data.id}
+                    </span>
+                    <br/>
+                    <span class="is-size-6">
+                    ${data.destination}
+                    </span>
+                    </a>
+                </div>
+                <div class="column is-narrow" onclick="copy(this);">
+                    <button class="button is-light">
+                        <span class="icon">
+                            <i class="fas fa-copy"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+        document.getElementById("main")
+            .insertAdjacentHTML('beforeend', shortcutString);
     });
 }
 
+function copy(target) {
+    var elem = target.closest('.notification')
+        .getElementsByClassName("shortcut")[0];
+
+    var inp = document.createElement('input');
+    document.body.appendChild(inp);
+    inp.value = elem.textContent.trim();
+    inp.select();
+    document.execCommand('copy',false);
+    inp.remove();
+}
 </script>
 {% endblock content %}

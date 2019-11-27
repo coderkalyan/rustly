@@ -22,7 +22,9 @@ use context::shortener::Shortener;
 
 #[get("/")]
 fn root() -> Template {
-    let context = HashMap::<String, String>::new();
+    let mut context = HashMap::<String, String>::new();
+    context.insert("base".to_string(), 
+                   env!("RUSTLY_URL").to_string());
     Template::render("index", context)
 }
 
